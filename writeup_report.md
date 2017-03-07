@@ -16,7 +16,11 @@
 
 ###Histogram of Oriented Gradients (HOG)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+####1. Extracting HOG features from training images (Explain how (and identify where in your code) you extracted HOG features from the training images.)
+
+To extract the histogram of oriented gradients, I used the `hog()` function from the `scikit-image` module and two helper functions- `get_hog_features()` and `extract_features()` to handle the input arguments and extract additional features. The source code can be found in the second cell of the submitted `vehicle_detection.ipynb` Jupyter Notebook. 
+
+Example below:
 
 The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
 
