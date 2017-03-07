@@ -4,8 +4,8 @@
 **Vehicle Detection Project**
 
 [//]: # (Image References)
-[image1]: ./examples/car_not_car.png
-[image2]: ./examples/HOG_example.jpg
+[image1]: ./writeup_images/car_not_car.png
+[image2]: ./writeup_images/HOG_example.jpg
 [image3]: ./examples/sliding_windows.jpg
 [image4]: ./examples/sliding_window.jpg
 [image5]: ./examples/bboxes_and_heat.png
@@ -13,35 +13,50 @@
 [image7]: ./examples/output_bboxes.png
 [video1]: ./project_video.mp4
 
+###Contents
+* Histogram of Oriented Gradients (HOG)
+  * Extracting HOG features from training images
+  * Selecting HOG parameters
+  * Training the SVM Classifier 
+* Sliding Window Search
+* Video Implementation
+* Discussion
 
 ###Histogram of Oriented Gradients (HOG)
 
-####1. Extracting HOG features from training images (Explain how (and identify where in your code) you extracted HOG features from the training images.)
+####1. Extracting HOG features from training images
 
 To extract the histogram of oriented gradients, I used the `hog()` function from the `scikit-image` module and two helper functions- `get_hog_features()` and `extract_features()` to handle the input arguments and extract additional features. The source code can be found in the second cell of the submitted `vehicle_detection.ipynb` Jupyter Notebook. 
 
-Example below:
-
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
-
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
-
 ![alt text][image1]
 
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+####2. Selecting feature extraction parameters (Explain how you settled on your final choice of HOG parameters.)
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+I explored different colorspaces for feature extraction and tested each by comparing the classification accuracies. I found that the YCrCb colorspace yielded the highest classification accuracy on the test set and that altering parameters such as `orientations`, `pixels_per_cell`, and `cells_per_block` did not give such a large effect. This is the reason these parameters were kept at the suggested values.
 
+Below is an example image with HOG parameters extracted in the `YCrCb` color space and  `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`.
 
 ![alt text][image2]
 
-####2. Explain how you settled on your final choice of HOG parameters.
+In the end, I settled on the following features and parameters: 
+* HOG
+  * All YCrCb channels
+  * 9 orientations
+  * 8 pixels per cell pix_per_cell = 8
+  * 2 cells per block
+* Binned Color features
+  * 32x32 bin size
+* Color histogram features
+  * 32 histogram bins
 
-I tried various combinations of parameters and...
+####3. Training the SVM Classifier (Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).)
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+An SVM classifier was trained on all of the provided training data after all features were extracted using the method above. All features were scaled prior to training. 
 
-I trained a linear SVM using...
+|         | Train | Test |
+|--------:|------:|-----:|
+|     Car |  7033 | 1758 |
+| Non-Car |  7169 | 1792 |
 
 ###Sliding Window Search
 
